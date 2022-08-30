@@ -21,6 +21,9 @@ pygame.display.set_caption("SPACE FIGHT")
 # generates a black thick line right across the center of the screen
 BORDER = pygame.Rect(WIDTH//2 - 5, 0, 5, HEIGHT)
 
+BULLET_HIT = pygame.mixer.Sound(os.path.join('Assets', 'hit_sound.mp3'))
+BULLET_FIRE = pygame.mixer.Sound(os.path.join('Assets', 'fire_sound.mp3'))
+
 # adds the yellow and red spaceship image to the window
 YELLOW_SPACESHIP_IMAGE = pygame.image.load(
     os.path.join('Assets', 'spaceship_yellow.png'))
@@ -141,17 +144,21 @@ def main():
                 if event.key == pygame.K_LCTRL and len(yellow_bullets) < MAX_BULLETS:
                     bullet = pygame.Rect(yellow.x + yellow.width, yellow.y + yellow.height//2 - 2, 10, 5)
                     yellow_bullets.append(bullet)
+                    BULLET_FIRE.play()
 
                 if event.key == pygame.K_RCTRL and len(red_bullets) < MAX_BULLETS:
                     bullet = pygame.Rect(red.x, red.y + red.height//2 - 2, 10, 5)
                     red_bullets.append(bullet)
+                    BULLET_FIRE.play()
 
             # if the bullets hit the other spaceship, that spaceship's health is reduced
             if event.type == RED_HIT:
                 red_health -= 1
+                BULLET_HIT.play()
                 
             if event.type == YELLOW_HIT:
                 yellow_health -= 1
+                BULLET_HIT.play()
         
         # when a spaceship runs out of health, a winner is displayed
         winner_text = ""
